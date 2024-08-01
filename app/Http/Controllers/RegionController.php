@@ -40,7 +40,8 @@ class RegionController extends Controller
         $regions = Region::all();
         return ApiResponseClass::sendResponse(
             $regions,
-            "regions retrieved successfully"
+            "regions retrieved successfully",
+            200
         );
     }
 
