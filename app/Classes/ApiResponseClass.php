@@ -13,10 +13,11 @@ class ApiResponseClass
      *
      */
     public static function rollback(
-        $e, $message="Something went wrong..."
+        $e, $message = "Something went wrong..."
     )
     {
-        DB:self::rollback();
+        DB:
+        self::rollback();
         self::throw($e, $message);
     }
 
@@ -30,15 +31,15 @@ class ApiResponseClass
      */
     public static function throw(
         $e,
-        $message="Something went wrong..."
+        $message = "Something went wrong..."
     )
     {
         Log::info($e);
         throw new \HttpResponseException(
             response()->json([
-                'message'=>$message
+                'message' => $message
             ],
-            500)
+                500)
         );
     }
 
@@ -48,19 +49,16 @@ class ApiResponseClass
      *
      * @param $result
      * @param string $message
+     * @param bool $success
      * @param int $code
      * @return JsonResponse
      */
-    public static function sendResponse(
-        $result,
-        string $message,
-        int $code = 200
-    ):JsonResponse
+    public static function sendResponse($result, string $message, bool $success = true, int $code = 200): JsonResponse
     {
         $response = [
-            'success'=>true,
-            'message'=>$message,
-            'data'=>$result,
+            'success' => $success,
+            'message' => $message,
+            'data' => $result,
         ];
 
         return response()

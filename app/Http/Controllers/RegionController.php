@@ -6,6 +6,8 @@ use App\Classes\ApiResponseClass;
 use App\Models\Region;
 use App\Http\Requests\StoreRegionRequest;
 use App\Http\Requests\UpdateRegionRequest;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
 
 class RegionController extends Controller
 {
@@ -35,9 +37,20 @@ class RegionController extends Controller
      *
      * @return \Illuminate\Http\JsonResponse
      */
-    public function index()
+    public function index(Request $request)
     {
-        $regions = Region::all();
+        $perPage = (int) $request->query('per_page', 4);
+
+        if ($perPage < 1 || $perPage > 100) {
+            return ApiResponseClass::sendResponse(
+                [],
+                "Per Page must be an integer greater than 0",
+                false,
+                400
+            );
+        }
+
+        $regions = Region::paginate($perPage);
         return ApiResponseClass::sendResponse(
             $regions,
             "regions retrieved successfully",
