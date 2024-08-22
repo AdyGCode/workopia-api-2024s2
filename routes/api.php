@@ -10,8 +10,14 @@ Route::get('/user', function (Request $request) {
 
 
 Route::group(['prefix' => 'v1'], function () {
-    Route::get('regions', [RegionController::class, 'index'])
-        ->name('region.index');
-    Route::get('regions/{id}', [RegionController::class, 'show'])
-        ->name('region.show');
+//    Route::get('regions', [RegionController::class, 'index'])
+//        ->name('region.index');
+//    Route::get('regions/{id}', [RegionController::class, 'show'])
+//        ->name('region.show');
+    Route::apiResource('regions', RegionController::class)
+        ->only(['index', 'show']);
+    Route::apiResource('regions', RegionController::class)
+        ->middleware('auth:sanctum')
+        ->only(['create', 'delete']);
+
 });
